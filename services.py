@@ -149,7 +149,7 @@ class GoogleSearchBuilder(object):
         self.keyword = keyword
         self.genre = SearchGenre.NEWS
         self.pagination = 0
-        self.time_range = TimeRange.DAY
+        self.time_range = None
         self.sort_by_date = True
         self.show_duplicated = True
 
@@ -206,9 +206,10 @@ class GoogleSearchBuilder(object):
         data = {
             'q': urllib.parse.quote_plus(self.keyword),
             # 'tbm': self.genre,
-            'tbs': self._get_tbs(),
             # 'hl': 'zh-TW'
         }
+        if self.time_range is not None:
+            data['tbs'] = self._get_tbs()
         if self.pagination > 0:
             data['start'] = self.pagination
         link = URL_PREFIX + urllib.parse.urlencode(data)
